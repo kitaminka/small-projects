@@ -5,16 +5,50 @@
     <title>Date pattern</title>
 </head>
 <body>
-    <canvas id="canvas"></canvas>
-    <input type="date" id="date-input"/>
+    <main style="display: flex; flex-direction: column; width: 360px">
+        <canvas id="canvas" width="360px" height="360px"></canvas>
+        <input type="date" id="date-input"/>
+        <input type="color" id="color-input">
+        <a id="download-link" href="">Download as image</a>
+    </main>
     <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
 
         const dateInput = document.getElementById('date-input');
+        const colorInput = document.getElementById('color-input');
+        const downloadLink = document.getElementById('download-link');
 
-        dateInput.oninput = () => {
+        const cellSize = 40;
 
+        function updatePattern() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const date = dateInput.value;
+            const nums = [];
+
+            for (let i = 0; i < date.length; i++) {
+                if (date[i] !== '-' && date[i] !== '0' && !nums.includes(date[i])){
+                    nums.push(date[i]);
+                }
+            }
+
+            for (let i = 0; i < 9; i++) {
+                for (let j = 0; j < 9; j++) {
+                    if (nums.includes(String((j + 1) * (i + 1)).slice(-1))) {
+                        ctx.fillRect(i * cellSize, j * cellSize, cellSize, cellSize);
+                    }
+                }
+            }
+
+            downloadLink.download = 'pattern.png';
+            downloadLink.href = canvas.toDataURL();
+        }
+
+        dateInput.oninput = updatePattern;
+        colorInput.oninput = () => {
+            ctx.fillStyle = colorInput.value;
+            updatePattern();
         }
     </script>
 </body>
