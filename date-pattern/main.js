@@ -5,7 +5,7 @@ const dateInput = document.getElementById('date-input');
 const colorInput = document.getElementById('color-input');
 const downloadLink = document.getElementById('download-link');
 
-const cellSize = 40;
+const cellSize = canvas.width / 9;
 
 function updatePattern() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
