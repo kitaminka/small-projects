@@ -1,8 +1,8 @@
-const canv = document.getElementById("canvas");
-const ctx = canv.getContext("2d");
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
 
-const spreadElem = document.getElementById("spread");
-const ammoElem = document.getElementById("ammo");
+const spreadElem = document.getElementById('spread');
+const ammoElem = document.getElementById('ammo');
 
 const balloonWidth = 30;
 const balloonHeight = 40;
@@ -23,12 +23,12 @@ const balloonImg = new Image();
 const hitBalloonImg = new Image();
 const bulletHoleImg = new Image();
 
-canv.width = window.innerWidth * 0.7;
-canv.height = window.innerHeight * 0.7;
+canvas.width = window.innerWidth * 0.7;
+canvas.height = window.innerHeight * 0.7;
 
-balloonImg.src = "./img/balloon.png";
-hitBalloonImg.src = "./img/hit_balloon.png";
-bulletHoleImg.src = "./img/bullet_hole.png";
+balloonImg.src = './img/balloon.png';
+hitBalloonImg.src = './img/hit_balloon.png';
+bulletHoleImg.src = './img/bullet_hole.png';
 
 document.onmousemove = (event) => {
     mouseX = event.x;
@@ -40,13 +40,13 @@ hitBalloonImg.onload = () => {
     hitBalloonLoaded = true;
 }
 bulletHoleImg.onload = () => {
-    canv.onmousedown = startShooting;
-    canv.onmouseup = stopShooting;
+    canvas.onmousedown = startShooting;
+    canvas.onmouseup = stopShooting;
 }
 
 function drawBalloon() {
-    balloonX = Math.random() * (canv.width - balloonWidth);
-    balloonY = Math.random() * (canv.height - balloonHeight);
+    balloonX = Math.random() * (canvas.width - balloonWidth);
+    balloonY = Math.random() * (canvas.height - balloonHeight);
 
     ctx.drawImage(balloonImg, balloonX, balloonY, balloonWidth, balloonHeight);
 }
