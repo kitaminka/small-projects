@@ -3,6 +3,8 @@ const ctx = canvas.getContext('2d');
 
 const spreadElem = document.getElementById('spread');
 const ammoElem = document.getElementById('ammo');
+const reloadingElem = document.getElementById('reloading');
+const scoreElem = document.getElementById('score');
 
 const balloonWidth = 30;
 const balloonHeight = 40;
@@ -15,7 +17,7 @@ let mouseX, mouseY;
 let gunInterval;
 let bulletSpread = 1;
 let ammo = 30;
-let stockAmmo = 30;
+let score = 0;
 
 let hitBalloonLoaded = false;
 
@@ -23,8 +25,8 @@ const balloonImg = new Image();
 const hitBalloonImg = new Image();
 const bulletHoleImg = new Image();
 
-canvas.width = window.innerWidth * 0.7;
-canvas.height = window.innerHeight * 0.7;
+canvas.width = 500;
+canvas.height = 500;
 
 balloonImg.src = './img/balloon.png';
 hitBalloonImg.src = './img/hit_balloon.png';
@@ -55,16 +57,18 @@ function drawBullet() {
         stopShooting();
         return;
     }
-    if (bulletSpread < 64) {
+    if (bulletSpread < 32) {
         bulletSpread *= 2;
         spreadElem.innerHTML = `Spread: ${bulletSpread}`;
     }
     ammo--;
     ammoElem.innerHTML = `Ammo: ${ammo}`;
-    const bulletX = mouseX - canvas.offsetLeft + (Math.random() * bulletSpread - bulletSpread / 2);
-    const bulletY = mouseY - canvas.offsetTop + (Math.random() * bulletSpread - bulletSpread / 2);
+    const bulletX = mouseX - canvas.offsetLeft + window.scrollX + (Math.random() * bulletSpread - bulletSpread / 2);
+    const bulletY = mouseY - canvas.offsetTop + window.scrollY + (Math.random() * bulletSpread - bulletSpread / 2);
 
     if (hitBalloonLoaded && balloonX <= bulletX && balloonX + balloonWidth >= bulletX && balloonY <= bulletY && balloonY + balloonHeight >= bulletY) {
+        score++;
+        scoreElem.innerHTML = `Score: ${score}`;
         ctx.drawImage(hitBalloonImg, balloonX, balloonY, balloonWidth, balloonHeight);
         drawBalloon();
     }
@@ -87,7 +91,16 @@ function startShooting() {
         gunInterval = setInterval(drawBullet, 100);
     }
 }
+function reload() {
+    reloadingElem.innerHTML = 'Reloading...';
+    setTimeout(() => {
+        ammo = 30;
+        ammoElem.innerHTML = `Ammo: ${ammo}`;
+        reloadingElem.innerHTML = '';
+    }, 1000);
+}
 function stopShooting() {
     clearInterval(gunInterval);
     gunInterval = setInterval(decreaseSpread, 300);
+    if (ammo <= 0) reload();
 }
