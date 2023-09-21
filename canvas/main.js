@@ -13,7 +13,7 @@ const startX = 1000;
 const startY = 1500;
 
 const levelCount = 10;
-const paramCount = 15;
+const paramCount = 16;
 
 const maxLength = 30;
 const minLength = 3;
@@ -46,10 +46,10 @@ const maxRandomTurn = 10;
 const minRandomTurn = -10;
 
 let genome = [
-    255, 0,   255, 220, 200, 220, 0,   0,   0,   0,   255, 100, 128, 125, 0,
-    255, 140, 125, 220, 220, 0,   0,   255, 0,   255, 255, 50,  128, 90,  0,
-    200, 0,   125, 220, 220, 0,   0,   0,   255, 50,   255, 30,  128,   125, 0,
-    2,   100, 10,  0,   0,   220, 255, 255, 0,   0,   255, 100, 128, 215, 0
+    255, 0,   255, 220, 200, 220, 0,   0,   0,   255, 0,   255, 100, 128, 125, 0,
+    255, 140, 125, 220, 220, 0,   0,   255, 0,   255, 255, 255, 50,  128, 90,  0,
+    200, 0,   125, 220, 220, 0,   0,   0,   255, 255, 50,   255, 30,  128,   125, 0,
+    2,   100, 10,  0,   0,   220, 255, 255, 0,   255, 0,   255, 100, 128, 215, 0
 ];
 
 let drawers = [{
@@ -68,7 +68,7 @@ function generateRandomGenome() {
     }
 }
 
-// generateRandomGenome();
+generateRandomGenome();
 drawPlant();
 console.log(genome);
 
@@ -143,12 +143,12 @@ function drawPlant() {
 }
 
 function drawLevel(params, prevColor) {
-    const branchCount = Math.round(params[10] / (maxGeneValue / (maxBranches - minBranches)) + minBranches);
+    const branchCount = Math.round(params[11] / (maxGeneValue / (maxBranches - minBranches)) + minBranches);
     const newDrawers = [];
 
-    const angleDeviation = params[12] / (maxGeneValue / (maxAngleDeviation - minAngleDeviation)) + minAngleDeviation;
+    const angleDeviation = params[13] / (maxGeneValue / (maxAngleDeviation - minAngleDeviation)) + minAngleDeviation;
 
-    const angle = params[11] / (maxGeneValue / (maxAngle - minAngle)) + minAngle;
+    const angle = params[12] / (maxGeneValue / (maxAngle - minAngle)) + minAngle;
 
     for (let i = 0; i < drawers.length; i++) {
         const rootDrawer = drawers[i];
@@ -172,7 +172,7 @@ function drawLevel(params, prevColor) {
         g: Math.round(params[7] / (maxGeneValue / (maxColorChanges - minColorChanges)) + minColorChanges),
         b: Math.round(params[8] / (maxGeneValue / (maxColorChanges - minColorChanges)) + minColorChanges)
     };
-    const colorInheritance = params[9] / 255;
+    const colorInheritance = params[10] / 255;
     const sizeChanges = params[2] / (maxGeneValue / (maxSizeChanges - minSizeChanges)) + minSizeChanges;
 
     let color;
@@ -182,9 +182,9 @@ function drawLevel(params, prevColor) {
         const length = params[0] / (maxGeneValue / (maxLength - minLength)) + minLength;
         let size = params[1] / (maxGeneValue / (maxSize - minSize)) + minSize;
         color = {
-            r: Math.floor(params[3] + (prevColor.r - params[3]) * colorInheritance),
-            g: Math.floor(params[4] + (prevColor.g - params[4]) * colorInheritance),
-            b: Math.floor(params[5] + (prevColor.b - params[5]) * colorInheritance)
+            r: Math.floor(params[3] + (prevColor.r - params[3]) * colorInheritance + Math.random() * (maxColorDeviation - minColorDeviation) + minColorDeviation),
+            g: Math.floor(params[4] + (prevColor.g - params[4]) * colorInheritance + Math.random() * (maxColorDeviation - minColorDeviation) + minColorDeviation),
+            b: Math.floor(params[5] + (prevColor.b - params[5]) * colorInheritance + Math.random() * (maxColorDeviation - minColorDeviation) + minColorDeviation)
         };
 
         for (let j = 0; j < length; j++) {
@@ -193,12 +193,12 @@ function drawLevel(params, prevColor) {
             let turn = 0;
 
             if (i % branchCount < (branchCount - 1) / 2) {
-                turn = params[13] / (maxGeneValue / (maxTurn - minTurn)) + minTurn;
+                turn = params[14] / (maxGeneValue / (maxTurn - minTurn)) + minTurn;
             } else if (i % branchCount > (branchCount - 1) / 2) {
-                turn = -(params[13] / (maxGeneValue / (maxTurn - minTurn)) + minTurn);
+                turn = -(params[14] / (maxGeneValue / (maxTurn - minTurn)) + minTurn);
             }
 
-            turn += (Math.random() * (maxRandomTurn - minRandomTurn) + minRandomTurn) * params[14] / maxGeneValue;
+            turn += (Math.random() * (maxRandomTurn - minRandomTurn) + minRandomTurn) * params[15] / maxGeneValue;
 
             size += sizeChanges;
             color.r += colorChanges.r;
