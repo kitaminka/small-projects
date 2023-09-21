@@ -1,3 +1,6 @@
+// This entire code is bad
+// Maybe I'll rewrite it someday
+
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
@@ -18,8 +21,8 @@ const paramCount = 16;
 const maxLength = 20;
 const minLength = 3;
 
-// const maxLengthDeviation = 1;
-// const minLengthDeviation = -1;
+const maxLengthDeviation = 10;
+const minLengthDeviation = -10;
 
 const maxSize = 15;
 const minSize = 5;
@@ -48,13 +51,14 @@ const minTurn = -1;
 const maxRandomTurn = 10;
 const minRandomTurn = -10;
 
-let genome = [
-    255, 0,   255, 220, 200, 220, 0,   0,   0,   'dsfdsfsdf', 0,   255, 100, 0, 125, 0,
-    255, 140, 125, 220, 220, 0,   0,   255, 0,   0, 255, 255, 50,  0, 90,  0,
-    200, 0,   125, 220, 220, 0,   0,   0,   255, 0, 50,  255, 30,  0,   125, 0,
-    2,   100, 10,  0,   0,   220, 255, 255, 0,   0, 0,   255, 100, 0, 215, 0
+const debugGenome = [
+    255, 0, 0,   255, 220, 200, 220, 0,   0,   0,   0,   255, 100, 0, 125, 0,
+    255, 0, 140, 125, 220, 220, 0,   0,   255, 0,   255, 255, 50,  0, 90,  0,
+    200, 0, 0,   125, 220, 220, 0,   0,   0,   255, 50,  255, 30,  0,   125, 0,
+    2,   0, 100, 10,  0,   0,   220, 255, 255, 0,   0,   255, 100, 0, 215, 0
 ];
 
+let genome = debugGenome;
 
 let drawers = [{
     x: startX,
@@ -89,12 +93,7 @@ function randomGenome() {
 }
 
 function debugPlant() {
-    genome = [
-        255, 0,   255, 220, 200, 220, 0,   0,   0,   0, 0,   255, 100, 0, 125, 0,
-        255, 140, 125, 220, 220, 0,   0,   255, 0,   0, 255, 255, 50,  0, 90,  0,
-        200, 0,   125, 220, 220, 0,   0,   0,   255, 0, 50,  255, 30,  0,   125, 0,
-        2,   100, 10,  0,   0,   220, 255, 255, 0,   0, 0,   255, 100, 0, 215, 0
-    ];
+    genome = debugGenome;
     redraw();
 }
 
@@ -197,23 +196,24 @@ function drawLevel(params, prevColor) {
     drawers = newDrawers;
 
     const colorChanges = {
-        r: Math.round(params[6] / (maxGeneValue / (maxColorChanges - minColorChanges)) + minColorChanges),
-        g: Math.round(params[7] / (maxGeneValue / (maxColorChanges - minColorChanges)) + minColorChanges),
-        b: Math.round(params[8] / (maxGeneValue / (maxColorChanges - minColorChanges)) + minColorChanges)
+        r: Math.round(params[7] / (maxGeneValue / (maxColorChanges - minColorChanges)) + minColorChanges),
+        g: Math.round(params[8] / (maxGeneValue / (maxColorChanges - minColorChanges)) + minColorChanges),
+        b: Math.round(params[9] / (maxGeneValue / (maxColorChanges - minColorChanges)) + minColorChanges)
     };
     const colorInheritance = params[10] / 255;
-    const sizeChanges = params[2] / (maxGeneValue / (maxSizeChanges - minSizeChanges)) + minSizeChanges;
+    const sizeChanges = params[3] / (maxGeneValue / (maxSizeChanges - minSizeChanges)) + minSizeChanges;
 
     let color;
 
     for (let i = 0; i < drawers.length; i++) {
+        const lengthDeviation = params[1] / maxGeneValue;
 
-        const length = params[0] / (maxGeneValue / (maxLength - minLength)) + minLength;
-        let size = params[1] / (maxGeneValue / (maxSize - minSize)) + minSize;
+        const length = params[0] / (maxGeneValue / (maxLength - minLength)) + minLength + (Math.random() * (maxLengthDeviation - minLengthDeviation) + minLengthDeviation) * lengthDeviation
+        let size = params[2] / (maxGeneValue / (maxSize - minSize)) + minSize;
         color = {
-            r: Math.floor(params[3] + (prevColor.r - params[3]) * colorInheritance + Math.random() * (maxColorDeviation - minColorDeviation) + minColorDeviation),
-            g: Math.floor(params[4] + (prevColor.g - params[4]) * colorInheritance + Math.random() * (maxColorDeviation - minColorDeviation) + minColorDeviation),
-            b: Math.floor(params[5] + (prevColor.b - params[5]) * colorInheritance + Math.random() * (maxColorDeviation - minColorDeviation) + minColorDeviation)
+            r: Math.floor(params[4] + (prevColor.r - params[4]) * colorInheritance + Math.random() * (maxColorDeviation - minColorDeviation) + minColorDeviation),
+            g: Math.floor(params[5] + (prevColor.g - params[5]) * colorInheritance + Math.random() * (maxColorDeviation - minColorDeviation) + minColorDeviation),
+            b: Math.floor(params[6] + (prevColor.b - params[6]) * colorInheritance + Math.random() * (maxColorDeviation - minColorDeviation) + minColorDeviation)
         };
 
         for (let j = 0; j < length; j++) {
