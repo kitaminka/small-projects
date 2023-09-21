@@ -9,16 +9,16 @@ const shadowDisplacement = 0.08;
 
 const maxGeneValue = 255;
 
-const startX = 1000;
-const startY = 1500;
+const startX = 500;
+const startY = 800;
 
 const levelCount = 10;
 const paramCount = 16;
 
-const maxLength = 30;
+const maxLength = 20;
 const minLength = 3;
 
-const maxSize = 25;
+const maxSize = 15;
 const minSize = 5;
 
 const maxSizeChanges = 1;
@@ -36,20 +36,20 @@ const minBranches = 1;
 const maxAngle = 40;
 const minAngle = 20;
 
-const maxAngleDeviation = 30;
-const minAngleDeviation = -30;
+const maxAngleDeviation = 5;
+const minAngleDeviation = -5;
 
 const maxTurn = 1;
 const minTurn = -1;
 
-const maxRandomTurn = 10;
-const minRandomTurn = -10;
+const maxRandomTurn = 5;
+const minRandomTurn = -5;
 
 let genome = [
-    255, 0,   255, 220, 200, 220, 0,   0,   0,   255, 0,   255, 100, 128, 125, 0,
-    255, 140, 125, 220, 220, 0,   0,   255, 0,   255, 255, 255, 50,  128, 90,  0,
-    200, 0,   125, 220, 220, 0,   0,   0,   255, 255, 50,   255, 30,  128,   125, 0,
-    2,   100, 10,  0,   0,   220, 255, 255, 0,   255, 0,   255, 100, 128, 215, 0
+    255, 0,   255, 220, 200, 220, 0,   0,   0,   255, 0,   255, 100, 255, 125, 0,
+    255, 140, 125, 220, 220, 0,   0,   255, 0,   255, 255, 255, 50,  255, 90,  0,
+    200, 0,   125, 220, 220, 0,   0,   0,   255, 255, 50,   255, 30,  255,   125, 0,
+    2,   100, 10,  0,   0,   220, 255, 255, 0,   255, 0,   255, 100, 255, 215, 0
 ];
 
 let drawers = [{
@@ -66,6 +66,32 @@ function generateRandomGenome() {
             genome.push(Math.round(Math.random() * maxGeneValue));
         }
     }
+}
+
+function redraw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawers = [{
+        x: startX,
+        y: startY,
+        dx: 0,
+        dy: -5,
+    }];
+    drawPlant();
+}
+
+function randomGenome() {
+    generateRandomGenome();
+    redraw();
+}
+
+function debugPlant() {
+    genome = [
+        255, 0,   255, 220, 200, 220, 0,   0,   0,   255, 0,   255, 100, 0, 125, 0,
+        255, 140, 125, 220, 220, 0,   0,   255, 0,   255, 255, 255, 50,  0, 90,  0,
+        200, 0,   125, 220, 220, 0,   0,   0,   255, 255, 50,   255, 30,  0,   125, 0,
+        2,   100, 10,  0,   0,   220, 255, 255, 0,   255, 0,   255, 100, 0, 215, 0
+    ];
+    redraw();
 }
 
 generateRandomGenome();
@@ -146,7 +172,7 @@ function drawLevel(params, prevColor) {
     const branchCount = Math.round(params[11] / (maxGeneValue / (maxBranches - minBranches)) + minBranches);
     const newDrawers = [];
 
-    const angleDeviation = params[13] / (maxGeneValue / (maxAngleDeviation - minAngleDeviation)) + minAngleDeviation;
+    const angleDeviation = params[13] / maxGeneValue;
 
     const angle = params[12] / (maxGeneValue / (maxAngle - minAngle)) + minAngle;
 
@@ -155,7 +181,7 @@ function drawLevel(params, prevColor) {
 
         for (let j = 0; j < branchCount; j++) {
 
-            const resVector = rotateVector(rootDrawer.dx, rootDrawer.dy, angle * (j - (branchCount - 1) / 2) + Math.random() * angleDeviation - angleDeviation / 2);
+            const resVector = rotateVector(rootDrawer.dx, rootDrawer.dy, angle * (j - (branchCount - 1) / 2) + (Math.random() * (maxAngleDeviation - minAngleDeviation) + minAngleDeviation) * angleDeviation);
             newDrawers.push({
                 x: rootDrawer.x,
                 y: rootDrawer.y,
