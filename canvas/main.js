@@ -5,8 +5,9 @@ const colorChange = 10;
 const shadowDisplacement = 0.08;
 
 // ctx.scale(0.5, 0.5);
+// ctx.scale(3, 3);
 
-const maxGenomeByte = 255;
+const maxGeneValue = 255;
 
 const startX = 1000;
 const startY = 1500;
@@ -17,8 +18,8 @@ const paramCount = 15;
 const maxLength = 30;
 const minLength = 3;
 
-const maxSize = 20;
-const minSize = 10;
+const maxSize = 25;
+const minSize = 5;
 
 const maxSizeChanges = 1;
 const minSizeChanges = -1;
@@ -26,8 +27,8 @@ const minSizeChanges = -1;
 const maxColorChanges = 5;
 const minColorChanges = -5;
 
-const maxColorInheritance = 1;
-const minColorInheritance = 0;
+const maxColorDeviation = 10;
+const minColorDeviation = -10;
 
 const maxBranches = 2;
 const minBranches = 1;
@@ -35,8 +36,8 @@ const minBranches = 1;
 const maxAngle = 40;
 const minAngle = 20;
 
-const maxAngleDeviation = 0;
-const minAngleDeviation = 0;
+const maxAngleDeviation = 30;
+const minAngleDeviation = -30;
 
 const maxTurn = 1;
 const minTurn = -1;
@@ -45,10 +46,10 @@ const maxRandomTurn = 10;
 const minRandomTurn = -10;
 
 let genome = [
-    255, 0,   255, 220, 200, 220, 0,   0,   0,   0,   255, 100, 255, 125, 0,
-    255, 140, 125, 220, 220, 0,   0,   255, 0,   255, 255, 50,  255, 90,  0,
-    200, 0,   125, 220, 220, 0,   0,   0,   255, 50,   255, 30,  0,   125, 255,
-    2,   100, 10,  0,   0,   220, 255, 255, 0,   0,   255, 100, 255, 215, 0
+    255, 0,   255, 220, 200, 220, 0,   0,   0,   0,   255, 100, 128, 125, 0,
+    255, 140, 125, 220, 220, 0,   0,   255, 0,   255, 255, 50,  128, 90,  0,
+    200, 0,   125, 220, 220, 0,   0,   0,   255, 50,   255, 30,  128,   125, 0,
+    2,   100, 10,  0,   0,   220, 255, 255, 0,   0,   255, 100, 128, 215, 0
 ];
 
 let drawers = [{
@@ -62,27 +63,66 @@ function generateRandomGenome() {
     genome = [];
     for (let i = 0; i < levelCount; i++) {
         for (let j = 0; j < paramCount; j++) {
-            genome.push(Math.round(Math.random() * maxGenomeByte));
+            genome.push(Math.round(Math.random() * maxGeneValue));
         }
     }
 }
 
-generateRandomGenome();
+// generateRandomGenome();
 drawPlant();
 console.log(genome);
 
 function drawCircle(x, y, radius, rColor, gColor, bColor) {
     if (radius < 0) {
-        radius = -radius
+        radius = -radius;
     }
-    // ctx.beginPath();
-    // ctx.fillStyle = `#${(rColor - colorChange).toString(16).padStart(2, '0')}${(gColor - colorChange).toString(16).padStart(2, '0')}${(bColor - colorChange).toString(16).padStart(2, '0')}`;
-    // ctx.arc(x-radius*shadowDisplacement, y-radius*shadowDisplacement, radius, 0, 2*Math.PI);
-    // ctx.fill();
-    // ctx.beginPath();
-    // ctx.fillStyle = `#${(rColor + colorChange).toString(16).padStart(2, '0')}${(gColor + colorChange).toString(16).padStart(2, '0')}${(bColor + colorChange).toString(16).padStart(2, '0')}`;
-    // ctx.arc(x+radius*shadowDisplacement, y+radius*shadowDisplacement, radius, 0, 2*Math.PI);
-    // ctx.fill();
+    if (radius < minSize) {
+        radius = minSize;
+    }
+    let r = rColor - colorChange;
+    let g = gColor - colorChange;
+    let b = bColor - colorChange;
+    if (r < 0) {
+        r = 0;
+    } else if (r > 255) {
+        r = 255;
+    }
+    if (g < 0) {
+        g = 0;
+    } else if (g > 255) {
+        g = 255;
+    }
+    if (b < 0) {
+        b = 0;
+    } else if (b > 255) {
+        b = 255;
+    }
+    ctx.beginPath();
+    ctx.fillStyle = `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+    ctx.arc(x-radius*shadowDisplacement, y-radius*shadowDisplacement, radius, 0, 2*Math.PI);
+    ctx.fill();
+    r = rColor + colorChange;
+    g = gColor + colorChange;
+    b = bColor + colorChange;
+    if (r < 0) {
+        r = 0;
+    } else if (r > 255) {
+        r = 255;
+    }
+    if (g < 0) {
+        g = 0;
+    } else if (g > 255) {
+        g = 255;
+    }
+    if (b < 0) {
+        b = 0;
+    } else if (b > 255) {
+        b = 255;
+    }
+    ctx.beginPath();
+    ctx.fillStyle = `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+    ctx.arc(x+radius*shadowDisplacement, y+radius*shadowDisplacement, radius, 0, 2*Math.PI);
+    ctx.fill();
     ctx.beginPath();
     ctx.fillStyle = `#${rColor.toString(16).padStart(2, '0')}${gColor.toString(16).padStart(2, '0')}${bColor.toString(16).padStart(2, '0')}`;
     ctx.arc(x, y, radius, 0, 2*Math.PI);
@@ -103,12 +143,12 @@ function drawPlant() {
 }
 
 function drawLevel(params, prevColor) {
-    const branchCount = Math.round(params[10] / (maxGenomeByte / (maxBranches - minBranches)) + minBranches);
+    const branchCount = Math.round(params[10] / (maxGeneValue / (maxBranches - minBranches)) + minBranches);
     const newDrawers = [];
 
-    const angleDeviation = params[12] / (maxGenomeByte / (maxAngleDeviation - minAngleDeviation)) + minAngleDeviation;
+    const angleDeviation = params[12] / (maxGeneValue / (maxAngleDeviation - minAngleDeviation)) + minAngleDeviation;
 
-    const angle = params[11] / (maxGenomeByte / (maxAngle - minAngle)) + minAngle;
+    const angle = params[11] / (maxGeneValue / (maxAngle - minAngle)) + minAngle;
 
     for (let i = 0; i < drawers.length; i++) {
         const rootDrawer = drawers[i];
@@ -128,19 +168,19 @@ function drawLevel(params, prevColor) {
     drawers = newDrawers;
 
     const colorChanges = {
-        r: Math.round(params[6] / (maxGenomeByte / (maxColorChanges - minColorChanges)) + minColorChanges),
-        g: Math.round(params[7] / (maxGenomeByte / (maxColorChanges - minColorChanges)) + minColorChanges),
-        b: Math.round(params[8] / (maxGenomeByte / (maxColorChanges - minColorChanges)) + minColorChanges)
+        r: Math.round(params[6] / (maxGeneValue / (maxColorChanges - minColorChanges)) + minColorChanges),
+        g: Math.round(params[7] / (maxGeneValue / (maxColorChanges - minColorChanges)) + minColorChanges),
+        b: Math.round(params[8] / (maxGeneValue / (maxColorChanges - minColorChanges)) + minColorChanges)
     };
     const colorInheritance = params[9] / 255;
-    const sizeChanges = params[2] / (maxGenomeByte / (maxSizeChanges - minSizeChanges)) + minSizeChanges;
+    const sizeChanges = params[2] / (maxGeneValue / (maxSizeChanges - minSizeChanges)) + minSizeChanges;
 
     let color;
 
     for (let i = 0; i < drawers.length; i++) {
 
-        const length = params[0] / (maxGenomeByte / (maxLength - minLength)) + minLength;
-        let size = params[1] / (maxGenomeByte / (maxSize - minSize)) + minSize;
+        const length = params[0] / (maxGeneValue / (maxLength - minLength)) + minLength;
+        let size = params[1] / (maxGeneValue / (maxSize - minSize)) + minSize;
         color = {
             r: Math.floor(params[3] + (prevColor.r - params[3]) * colorInheritance),
             g: Math.floor(params[4] + (prevColor.g - params[4]) * colorInheritance),
@@ -153,12 +193,12 @@ function drawLevel(params, prevColor) {
             let turn = 0;
 
             if (i % branchCount < (branchCount - 1) / 2) {
-                turn = params[13] / (maxGenomeByte / (maxTurn - minTurn)) + minTurn;
+                turn = params[13] / (maxGeneValue / (maxTurn - minTurn)) + minTurn;
             } else if (i % branchCount > (branchCount - 1) / 2) {
-                turn = -(params[13] / (maxGenomeByte / (maxTurn - minTurn)) + minTurn);
+                turn = -(params[13] / (maxGeneValue / (maxTurn - minTurn)) + minTurn);
             }
 
-            turn += (Math.random() * (maxRandomTurn - minRandomTurn) + minRandomTurn) * params[14] / maxGenomeByte;
+            turn += (Math.random() * (maxRandomTurn - minRandomTurn) + minRandomTurn) * params[14] / maxGeneValue;
 
             size += sizeChanges;
             color.r += colorChanges.r;
