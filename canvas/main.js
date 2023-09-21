@@ -39,8 +39,8 @@ const minBranches = 1;
 const maxAngle = 60;
 const minAngle = 20;
 
-const maxAngleDeviation = 5;
-const minAngleDeviation = -5;
+const maxAngleDeviation = 10;
+const minAngleDeviation = -10;
 
 const maxTurn = 1;
 const minTurn = -1;
@@ -49,11 +49,12 @@ const maxRandomTurn = 10;
 const minRandomTurn = -10;
 
 let genome = [
-    255, 0,   255, 220, 200, 220, 0,   0,   0,   255, 0,   255, 100, 255, 125, 0,
-    255, 140, 125, 220, 220, 0,   0,   255, 0,   255, 255, 255, 50,  255, 90,  0,
-    200, 0,   125, 220, 220, 0,   0,   0,   255, 255, 50,   255, 30,  255,   125, 0,
-    2,   100, 10,  0,   0,   220, 255, 255, 0,   255, 0,   255, 100, 255, 215, 0
+    255, 0,   255, 220, 200, 220, 0,   0,   0,   'dsfdsfsdf', 0,   255, 100, 0, 125, 0,
+    255, 140, 125, 220, 220, 0,   0,   255, 0,   0, 255, 255, 50,  0, 90,  0,
+    200, 0,   125, 220, 220, 0,   0,   0,   255, 0, 50,  255, 30,  0,   125, 0,
+    2,   100, 10,  0,   0,   220, 255, 255, 0,   0, 0,   255, 100, 0, 215, 0
 ];
+
 
 let drawers = [{
     x: startX,
@@ -89,15 +90,15 @@ function randomGenome() {
 
 function debugPlant() {
     genome = [
-        255, 0,   255, 220, 200, 220, 0,   0,   0,   255, 0,   255, 100, 0, 125, 0,
-        255, 140, 125, 220, 220, 0,   0,   255, 0,   255, 255, 255, 50,  0, 90,  0,
-        200, 0,   125, 220, 220, 0,   0,   0,   255, 255, 50,   255, 30,  0,   125, 0,
-        2,   100, 10,  0,   0,   220, 255, 255, 0,   255, 0,   255, 100, 0, 215, 0
+        255, 0,   255, 220, 200, 220, 0,   0,   0,   0, 0,   255, 100, 0, 125, 0,
+        255, 140, 125, 220, 220, 0,   0,   255, 0,   0, 255, 255, 50,  0, 90,  0,
+        200, 0,   125, 220, 220, 0,   0,   0,   255, 0, 50,  255, 30,  0,   125, 0,
+        2,   100, 10,  0,   0,   220, 255, 255, 0,   0, 0,   255, 100, 0, 215, 0
     ];
     redraw();
 }
 
-generateRandomGenome();
+// generateRandomGenome();
 drawPlant();
 console.log(genome);
 
@@ -183,7 +184,6 @@ function drawLevel(params, prevColor) {
         const rootDrawer = drawers[i];
 
         for (let j = 0; j < branchCount; j++) {
-
             const resVector = rotateVector(rootDrawer.dx, rootDrawer.dy, angle * (j - (branchCount - 1) / 2) + (Math.random() * (maxAngleDeviation - minAngleDeviation) + minAngleDeviation) * angleDeviation);
             newDrawers.push({
                 x: rootDrawer.x,
@@ -233,7 +233,6 @@ function drawLevel(params, prevColor) {
             color.r += colorChanges.r;
             color.g += colorChanges.g;
             color.b += colorChanges.b;
-            console.log(color.r);
             drawers[i].x += drawers[i].dx;
             drawers[i].y += drawers[i].dy;
             const resVector = rotateVector(drawers[i].dx, drawers[i].dy, turn);
