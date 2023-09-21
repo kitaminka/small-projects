@@ -18,6 +18,9 @@ const paramCount = 16;
 const maxLength = 20;
 const minLength = 3;
 
+// const maxLengthDeviation = 1;
+// const minLengthDeviation = -1;
+
 const maxSize = 15;
 const minSize = 5;
 
@@ -33,7 +36,7 @@ const minColorDeviation = -10;
 const maxBranches = 2;
 const minBranches = 1;
 
-const maxAngle = 40;
+const maxAngle = 60;
 const minAngle = 20;
 
 const maxAngleDeviation = 5;
@@ -42,8 +45,8 @@ const minAngleDeviation = -5;
 const maxTurn = 1;
 const minTurn = -1;
 
-const maxRandomTurn = 5;
-const minRandomTurn = -5;
+const maxRandomTurn = 10;
+const minRandomTurn = -10;
 
 let genome = [
     255, 0,   255, 220, 200, 220, 0,   0,   0,   255, 0,   255, 100, 255, 125, 0,
