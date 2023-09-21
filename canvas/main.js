@@ -12,7 +12,7 @@ const startY = 800;
 const segmentDisplacement = 2;
 
 const levelCount = 4;
-const paramCount = 3;
+const paramCount = 6;
 
 const maxLength = 100;
 const minLength = 10;
@@ -24,10 +24,10 @@ const maxSizeChanges = 0.3;
 const minSizeChanges = -0.3;
 
 let genome = [
-    255, 200, 0,
-    255, 140, 125,
-    200, 0, 125,
-    2, 3, 10
+    255, 200, 0, 200, 100, 200,
+    255, 140, 125, 255, 255, 0,
+    200, 0, 125, 255, 255, 0,
+    2, 3, 10, 0, 0, 255
 ];
 
 function drawCircle(x, y, radius, rColor, gColor, bColor) {
@@ -66,7 +66,7 @@ function drawLevel(params) {
     const sizeChanges = params[2] / (maxGenomeByte / (maxSizeChanges - minSizeChanges)) + minSizeChanges;
 
     for (let i = 0; i < length; i++) {
-        drawCircle(x, y, size, 200, 200, 200);
+        drawCircle(x, y, size, params[3], params[4], params[5]);
         size += sizeChanges;
         y -= segmentDisplacement;
         y -= turn;
