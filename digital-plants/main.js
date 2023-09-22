@@ -7,28 +7,25 @@ const ctx = canvas.getContext('2d');
 const colorChange = 10;
 const shadowDisplacement = 0.08;
 
-// ctx.scale(0.5, 0.5);
-// ctx.scale(3, 3);
-
 const maxGeneValue = 255;
 
-const startX = 500;
+const startX = 400;
 const startY = 450;
 
 const levelCount = 10;
 const paramCount = 16;
 
-const maxLength = 20;
+const maxLength = 12;
 const minLength = 3;
 
 const maxLengthDeviation = 10;
 const minLengthDeviation = -10;
 
-const maxSize = 15;
+const maxSize = 10;
 const minSize = 5;
 
-const maxSizeChanges = 1;
-const minSizeChanges = -1;
+const maxSizeChanges = 0.5;
+const minSizeChanges = -0.5;
 
 const maxColorChanges = 5;
 const minColorChanges = -5;

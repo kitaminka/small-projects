@@ -7,9 +7,13 @@
     <script src="main.js" defer></script>
 </head>
 <body>
-    <button onclick="randomGenome()">Random genome</button>
-    <button onclick="redraw()">Redraw</button>
-    <button onclick="debugPlant()">Debug plant</button>
-    <canvas id="canvas" width="1000px" height="500px"></canvas>
+    <main>
+        <canvas class="canvas" id="canvas" width="800px" height="500px"></canvas>
+        <div class="buttons">
+            <button class="button" onclick="randomGenome()">Random genome</button>
+            <button class="button" onclick="redraw()">Redraw</button>
+            <button class="button" onclick="debugPlant()">Debug plant</button>
+        </div>
+    </main>
 </body>
 </html>

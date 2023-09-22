@@ -1,4 +1,23 @@
 body {
-    /*padding: 0;*/
     margin: 0;
+}
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.canvas {
+    width: 100%;
+    height: 100%;
+}
+.buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+.button {
+    margin: 10px;
+    font-size: 30px;
+    padding: 30px;
 }
