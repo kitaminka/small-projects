@@ -13,7 +13,7 @@ const shadowDisplacement = 0.08;
 const maxGeneValue = 255;
 
 const startX = 500;
-const startY = 800;
+const startY = 450;
 
 const levelCount = 10;
 const paramCount = 16;
@@ -64,7 +64,7 @@ let drawers = [{
     x: startX,
     y: startY,
     dx: 0,
-    dy: -5,
+    dy: -3,
 }];
 
 function generateRandomGenome() {
@@ -82,7 +82,7 @@ function redraw() {
         x: startX,
         y: startY,
         dx: 0,
-        dy: -5,
+        dy: -3,
     }];
     drawPlant();
 }
@@ -99,7 +99,7 @@ function debugPlant() {
 
 // generateRandomGenome();
 drawPlant();
-console.log(genome);
+
 
 function drawCircle(x, y, radius, rColor, gColor, bColor) {
     if (radius < 0) {
@@ -166,7 +166,6 @@ function drawPlant() {
     };
 
     for (let i = 0; i < levelCount; i++) {
-        console.log(`drawing level ${i}`);
         prevColor = drawLevel(genome.slice(i*paramCount, i*paramCount+paramCount), prevColor);
     }
 }
