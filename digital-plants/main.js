@@ -52,6 +52,12 @@ const debugGenome = [
     255, 0, 0,   255, 220, 200, 220, 0,   0,   0,   0,   255, 100, 0, 125, 0,
     255, 0, 140, 125, 220, 220, 0,   0,   255, 0,   255, 255, 50,  0, 90,  0,
     200, 0, 0,   125, 220, 220, 0,   0,   0,   255, 50,  255, 30,  0,   125, 0,
+    2,   0, 100, 10,  0,   0,   220, 255, 255, 0,   0,   255, 100, 0, 215, 0,
+    2,   0, 100, 10,  0,   0,   220, 255, 255, 0,   0,   255, 100, 0, 215, 0,
+    2,   0, 100, 10,  0,   0,   220, 255, 255, 0,   0,   255, 100, 0, 215, 0,
+    2,   0, 100, 10,  0,   0,   220, 255, 255, 0,   0,   255, 100, 0, 215, 0,
+    2,   0, 100, 10,  0,   0,   220, 255, 255, 0,   0,   255, 100, 0, 215, 0,
+    2,   0, 100, 10,  0,   0,   220, 255, 255, 0,   0,   255, 100, 0, 215, 0,
     2,   0, 100, 10,  0,   0,   220, 255, 255, 0,   0,   255, 100, 0, 215, 0
 ];
 
@@ -71,6 +77,26 @@ function generateRandomGenome() {
             genome.push(Math.round(Math.random() * maxGeneValue));
         }
     }
+}
+
+function crossCurrentGenomeWithDebugGenome() {
+    for (let i = 0; i < levelCount * paramCount; i++) {
+        if (Math.round(Math.random()) == 0) {
+            genome[i] = debugGenome[i];
+        }
+    }
+    
+    redraw();
+}
+
+function crossCurrentGenomeWithRandomGenome() {
+    for (let i = 0; i < levelCount * paramCount; i++) {
+        if (Math.round(Math.random()) == 0) {
+            genome[i] = Math.round(Math.random() * maxGeneValue);
+        }
+    }
+    
+    redraw();
 }
 
 function redraw() {
